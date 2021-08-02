@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhaokang.rebateServer.mapper.SupermarketRebateMapper">
+
+    <insert id="addSupermarketRebate" parameterType="SupermarketRebate">
+
+        if exists (select * from ZZ_SupermarketRebate where id=#{id})
+        begin
+        update ZZ_SupermarketRebate set
+        symbol=#{symbol},productSeries=#{productSeries},monthlyReward=#{monthlyReward},
+        annualAward=#{annualAward},remark=#{remark}
+        from ZZ_SupermarketRebate where id=#{id}
+        end
+        else
+        begin
+        insert into ZZ_SupermarketRebate values (
+        #{symbol},#{productSeries},#{monthlyReward},#{annualAward},#{remark})
+        end
+
+
+    </insert>
+
+    <select id="getSupermarketRebate" resultType="SupermarketRebate">
+        select * from ZZ_SupermarketRebate
+    </select>
+
+    <delete id="deleteSupermarketRebate" parameterType="SupermarketRebate">
+        delete from ZZ_SupermarketRebate where id in(
+        <foreach collection="list" item="item" separator=",">
+            #{item.id}
+        </foreach>
+        )
+    </delete>
+</mapper>

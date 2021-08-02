@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhaokang.rebateServer.mapper.UserMapper">
+    <insert id="addUser" parameterType="User">
+if exists (select id from ZZ_User where id=#{id})
+begin
+        update ZZ_User set userName=#{phone},phone=#{phone},password=#{password},realName=#{realName},roleType=#{roleType},memo=#{memo},stopuse=#{stopuse} from ZZ_User where id=#{id}
+end
+else
+begin
+        insert into ZZ_User (userName,phone,password,realName,roleType,memo,stopuse)
+        values (#{phone},#{phone},#{password},#{realName},#{roleType},#{memo},#{stopuse})
+end
+    </insert>
+
+<delete id="deletuser" parameterType="User">
+    if exists (select id from ZZ_User where id=#{id})
+begin
+delete from ZZ_User where id=#{id}
+end
+</delete>
+    <select id="selectUser" resultType="User">
+        select * from ZZ_User
+    </select>
+    <select id="selectphone" resultType="int">
+        select count(*) from ZZ_User where phone=#{phone}
+    </select>
+</mapper>
+

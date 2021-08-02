@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhaokang.rebateServer.mapper.ContractCustomerRebateMapper">
+
+    <insert id="addContractCustomerRebate" parameterType="ContractCustomerRebate">
+
+        if exists (select * from ZZ_ContractCustomerRebate where id=#{id})
+        begin
+        update ZZ_ContractCustomerRebate set
+        symbol=#{symbol},productionType=#{productionType},productionBatch=#{productionBatch},
+        seasonReturn=#{seasonReturn},monthReturn=#{monthReturn},
+        finishTaskAward= #{finishTaskAward},fuzzyReward=#{fuzzyReward},
+        excessReward=#{excessReward},remark=#{remark}
+        from ZZ_ContractCustomerRebate where id=#{id}
+        end
+        else
+        begin
+        insert into ZZ_ContractCustomerRebate values (
+        #{symbol},#{productionType},#{productionBatch},#{seasonReturn},#{monthReturn},
+        #{finishTaskAward},#{fuzzyReward},#{excessReward},#{remark})
+        end
+
+
+    </insert>
+
+    <select id="getContractCustomerRebate" resultType="ContractCustomerRebate">
+        select * from ZZ_ContractCustomerRebate
+    </select>
+
+    <delete id="deleteContractCustomerRebate" parameterType="ContractCustomerRebate">
+        delete from ZZ_ContractCustomerRebate where id in(
+        <foreach collection="list" item="item" separator=",">
+            #{item.id}
+        </foreach>
+        )
+    </delete>
+</mapper>
